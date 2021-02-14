@@ -39,9 +39,17 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 	int value = strtol(argv[1], NULL, 10);
-	FILE *brightness = open_file(BRIGHTNESS_FILE);
+	FILE *brightness = open_file(BACKLIGHT_DIR "brightness");
 	int brightness_value = MIN_BRIGHTNESS;
 	switch (argv[1][0]) {
+		case 'g':
+			fprintf(stdout, "%d", brightness_value);
+			fscanf(brightness, "%d", &brightness_value);
+			fclose(brightness);
+			brightness_value += MAX_BRIGHTNESS * value / 100;
+			fprintf(stdout, "%d\n", brightness_value);
+			fflush(stdout);
+			return EXIT_SUCCESS;
 		case '+':
 		case '-':
 			fscanf(brightness, "%d", &brightness_value);
